@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -111,7 +112,28 @@ class _ChatPageState extends State<ChatPage> {
     FirebaseChatCore.instance.updateMessage(updatedMessage, widget.room.id);
   }
 
-  void _handleSendPressed(types.PartialText message) {
+  void _handleSendPressed(types.PartialText message) async{
+
+    final dio = Dio();
+
+    await dio.post('https://fcm.googleapis.com/fcm/send', data:  {
+      "notification": {
+        "title": "Rabyn",
+        "body": message.text,
+        "android_channel_id": "high_importance_channel",
+        "priority": "high"
+      },
+      "to": "f7qaKNvxRk2FHvvfFSZFNR:APA91bFCWYKmu7PcHG_jWjObVOsiTyWo-ibYbmwxfCzy4tmPpl2qYnZ1TeJC4UZFPNeTfh0vI4eqTCta2LskZvnwxmsrpK4DGaF1WEmcwgV_uaxPvva5hRiRhMTdaIdB9Pp5tkwRCFMj"
+
+    }
+
+    , options: Options(
+      headers: {
+        HttpHeaders.authorizationHeader: 'key=AAAA1d2S43A:APA91bGMKtpZNyGuxmj6vPYwxhLfCcAJClv21H3WXQDu7WsrUq8Da4pgs64xlLeNHxyG1QNaQSM8ixC-RfbKzOeAGD_e-Xog6nCd2408Fh_fv1otH_AFTNtr_6h_vEwwg4SVQfmBV12m '
+      }
+    ));
+
+
     FirebaseChatCore.instance.sendMessage(
       message,
       widget.room.id,

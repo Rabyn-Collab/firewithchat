@@ -46,7 +46,7 @@ class AuthProvider{
      imageUrl: imageUrl,
      firstName: username,
        metadata: {
-       'email': email
+       'email': email,
        },
        createdAt: DateTime.now().millisecondsSinceEpoch
    ));

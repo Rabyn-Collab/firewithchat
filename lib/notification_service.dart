@@ -1,4 +1,4 @@
-
+import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -21,14 +21,6 @@ class LocalNotificationService{
       onSelectNotification: (String? id) async {
         if (id!.isNotEmpty) {
           print("Router Value1234 $id");
-          // Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //     builder: (context) => DemoScreen(
-          //       id: id,
-          //     ),
-          //   ),
-          // );
-
 
         }
       },
