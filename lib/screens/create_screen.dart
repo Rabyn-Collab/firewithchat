@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_projects_start/provider/crud_provider.dart';
 import 'package:flutter_projects_start/provider/image_provider.dart';
@@ -13,7 +12,6 @@ class CreateScreen extends StatelessWidget {
   final descController = TextEditingController();
 
   final _form = GlobalKey<FormState>();
-  final id = FirebaseAuth.instance.currentUser!.uid;
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -76,39 +74,39 @@ class CreateScreen extends StatelessWidget {
                     SizedBox(height: 10,),
                     ElevatedButton(
                         onPressed: () async{
-                          _form.currentState!.save();
-                          FocusScope.of(context).unfocus();
-                          if(_form.currentState!.validate()) {
-                            if (image == null) {
-                              ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      duration: Duration(milliseconds: 500),
-                                      content: Text('please select an image')
-                                  ));
-                            } else {
-                              final response = await ref.read(crudProvider)
-                                  .postAdd(
-                                  title: titleController.text.trimLeft(),
-                                  description: descController.text.trim(),
-                                  userId: id,
-                                  image: image
-                              );
-                              if (response != 'success') {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        duration: Duration(seconds: 1),
-                                        content: Text(response)
-                                    ));
-                              } else {
-                                Navigator.of(context).pop();
-                              }
-                            }
-                          }
-
+                          // _form.currentState!.save();
+                          // FocusScope.of(context).unfocus();
+                          // if(_form.currentState!.validate()) {
+                          //   if (image == null) {
+                          //     ScaffoldMessenger.of(context)
+                          //         .hideCurrentSnackBar();
+                          //     ScaffoldMessenger.of(context).showSnackBar(
+                          //         SnackBar(
+                          //             duration: Duration(milliseconds: 500),
+                          //             content: Text('please select an image')
+                          //         ));
+                          //   } else {
+                          //     final response = await ref.read(crudProvider)
+                          //         .postAdd(
+                          //         title: titleController.text.trimLeft(),
+                          //         description: descController.text.trim(),
+                          //         userId: id,
+                          //         image: image
+                          //     );
+                          //     if (response != 'success') {
+                          //       ScaffoldMessenger.of(context)
+                          //           .hideCurrentSnackBar();
+                          //       ScaffoldMessenger.of(context).showSnackBar(
+                          //           SnackBar(
+                          //               duration: Duration(seconds: 1),
+                          //               content: Text(response)
+                          //           ));
+                          //     } else {
+                          //       Navigator.of(context).pop();
+                          //     }
+                          //   }
+                          // }
+                          //
 
 
                         }, child: Text('Submit')

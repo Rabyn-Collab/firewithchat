@@ -1,32 +1,33 @@
+import 'package:hive_flutter/adapters.dart';
+part 'user.g.dart';
 
 
+@HiveType(typeId: 0)
+class User extends HiveObject{
 
+  @HiveField(0)
+  String username;
 
-class Users {
-final String email;
-final String userId;
-final String userImage;
-final String username;
+  @HiveField(1)
+  String email;
 
+  @HiveField(2)
+  String token;
 
-Users({
-  required this.email,
-  required this.userId,
-  required this.userImage,
-  required this.username
+  User({
+   required this.email,
+    required this.username,
+    required this.token
 });
 
 
-factory Users.fromJson(Map<String, dynamic> json){
-  return Users(
-      email: json['email'],
-      userId:  json['userId'],
-      userImage: json['userImage'],
-      username: json['username']
-  );
-}
-
-
+  factory User.fromJson(Map<String, dynamic> json){
+    return User(
+        email: json['email'],
+        username: json['username'],
+        token: json['token']
+    );
+  }
 
 
 }
