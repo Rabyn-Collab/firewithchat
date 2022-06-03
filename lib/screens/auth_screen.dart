@@ -25,7 +25,6 @@ class AuthScreen extends StatelessWidget {
         child: Consumer(
           builder: (context, ref, child) {
             final isLogin = ref.watch(loginProvider);
-            final image = ref.watch(imageProvider).image;
             return ListView(
               children: [
            Container(
@@ -77,70 +76,48 @@ class AuthScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 20,),
-              if(!isLogin)  InkWell(
-                  onTap: (){
-                    ref.read(imageProvider).pickImage();
-                  },
-                  child: Container(
-                    height: 150,
-                    width: 150,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black)
-                    ),
-                    child: image ==null ? Center(child: Text('please select an image'))
-                        : Image.file(File(image.path), fit: BoxFit.cover,),
-                  ),
-                ),
-                SizedBox(height: 10,),
+
                 ElevatedButton(
                     onPressed: () async{
-                      // _form.currentState!.save();
-                      // FocusScope.of(context).unfocus();
-                      // if(_form.currentState!.validate()){
-                      //   if(isLogin){
-                      //     final response = await ref.read(authProvider).userLogin(
-                      //         email: mailController.text.trim(),
-                      //         password: passwordController.text.trim()
-                      //     );
-                      //  if(response != 'success') {
-                      //    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                      //    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      //        duration: Duration(seconds: 1),
-                      //        content: Text(response)
-                      //    ));
-                      //  }
-                      //
-                      //   }else{
-                      //    if(image == null){
-                      //      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                      //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      //         duration: Duration(milliseconds: 500),
-                      //           content: Text('please select an image')
-                      //       ));
-                      //    }else{
-                      //
-                      //  final response =   await ref.read(authProvider).userSignUp(
-                      //        username: userNameController.text.trim(),
-                      //        email: mailController.text.trim(),
-                      //        password: passwordController.text.trim(),
-                      //        image: image);
-                      //
-                      //  if(response != 'success'){
-                      //    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                      //    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      //        duration: Duration(seconds: 1),
-                      //        content: Text(response)
-                      //    ));
-                      //  }
-                      //
-                      //
-                      //    }
-                      //
-                      //
-                      //
-                      //   }
-                      //
-                      // }
+                      _form.currentState!.save();
+                      FocusScope.of(context).unfocus();
+                      if(_form.currentState!.validate()){
+                        if(isLogin){
+                          final response = await ref.read(userProvider.notifier).userLogin(
+                              email: mailController.text.trim(),
+                              password: passwordController.text.trim()
+                          );
+                       if(response != 'success') {
+                         ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                             duration: Duration(seconds: 1),
+                             content: Text(response)
+                         ));
+                       }
+
+                        }else{
+
+                       final response =   await ref.read(userProvider.notifier).userSignUp(
+                             username: userNameController.text.trim(),
+                             email: mailController.text.trim(),
+                             password: passwordController.text.trim(),
+                       );
+
+                       if(response != 'success'){
+                         ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                             duration: Duration(seconds: 1),
+                             content: Text(response)
+                         ));
+                       }
+
+
+                         }
+
+
+                        }
+
+
 
                     }, child: Text('Submit')
                 ),

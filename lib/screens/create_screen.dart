@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_projects_start/provider/crud_provider.dart';
 import 'package:flutter_projects_start/provider/image_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

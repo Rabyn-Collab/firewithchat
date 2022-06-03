@@ -7,7 +7,7 @@ import 'package:hive_flutter/adapters.dart';
 
 
 
-final userProvider = StateNotifierProvider((ref) => UserProvider(ref.read(box1)));
+final userProvider = StateNotifierProvider<UserProvider, List<User>>((ref) => UserProvider(ref.read(box1)));
 
 class UserProvider extends StateNotifier<List<User>>{
   UserProvider(super.state);
