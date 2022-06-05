@@ -1,12 +1,17 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_projects_start/model/product.dart';
 import 'package:flutter_projects_start/provider/image_provider.dart';
 import 'package:flutter_projects_start/provider/product_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
 
-class CreateScreen extends StatelessWidget {
+class EditScreen extends StatelessWidget {
+
+  final Product product;
+  EditScreen(this.product);
 
   final titleController = TextEditingController();
   final descController = TextEditingController();
@@ -29,7 +34,8 @@ class CreateScreen extends StatelessWidget {
                         margin: EdgeInsets.only(bottom: 50),
                         child: Text('create Form', style: TextStyle(fontSize: 20),)),
                     TextFormField(
-                      controller: titleController,
+                      controller: titleController..text = product.product_name,
+                      textInputAction: TextInputAction.next,
                       validator: (val) {
                         if(val!.isEmpty){
                           return 'please provide title';
@@ -44,7 +50,8 @@ class CreateScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 20,),
                     TextFormField(
-                      controller: descController,
+                      controller: descController..text = product.product_detail,
+                      textInputAction: TextInputAction.next,
                       maxLines: 2,
                       validator: (val) {
                         if(val!.isEmpty){
@@ -58,8 +65,9 @@ class CreateScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 20,),
                     TextFormField(
-                      controller: priceController,
+                      controller: priceController..text = '${product.price}',
                       keyboardType : TextInputType.number,
+                      textInputAction: TextInputAction.done,
                       validator: (val) {
                         if(val!.isEmpty){
                           return 'please provide price';
@@ -82,7 +90,7 @@ class CreateScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.black)
                         ),
-                        child: image ==null ? Center(child: Text('please select an image'))
+                        child: image ==null ? Image.network(product.image)
                             : Image.file(File(image.path), fit: BoxFit.cover,),
                       ),
                     ),
@@ -90,36 +98,29 @@ class CreateScreen extends StatelessWidget {
                     ElevatedButton(
                         onPressed: () async{
                           _form.currentState!.save();
-                          FocusScope.of(context).unfocus();
+                          SystemChannels.textInput.invokeMethod('TextInput.hide');
                           if(_form.currentState!.validate()) {
                             if (image == null) {
-                              ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      duration: Duration(milliseconds: 500),
-                                      content: Text('please select an image')
-                                  ));
+                               final response = await ref.read(crudProvider).updateProduct(
+                                   product_name: titleController.text.trimLeft(),
+                                   product_detail: descController.text.trim(),
+                                   price: int.parse(priceController.text.trim()),
+                                   id: product.id);
+                               ref.refresh(productProvider);
+                               Navigator.of(context).pop();
                             } else {
                               final response = await ref.read(crudProvider)
-                                  .addProduct(
-                                 product_name: titleController.text.trimLeft(),
-                                 product_detail: descController.text.trim(),
+                                  .updateProduct(
+                                  product_name: titleController.text.trimLeft(),
+                                  product_detail: descController.text.trim(),
                                   price: int.parse(priceController.text.trim()),
-                                  image: image
+                                  image: image,
+                                  id: product.id,
+                                public_id: product.public_id
                               );
                               ref.refresh(productProvider);
-                              if (response != 'success') {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        duration: Duration(seconds: 1),
-                                        content: Text(response)
-                                    ));
-                              } else {
                                 Navigator.of(context).pop();
-                              }
+
                             }
                           }
 

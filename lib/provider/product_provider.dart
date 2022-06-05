@@ -5,8 +5,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter_projects_start/api.dart';
 import 'package:flutter_projects_start/model/product.dart';
 import 'package:flutter_projects_start/model/user.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:image_picker/image_picker.dart';
+
+
+final productProvider = FutureProvider((ref) => ProductProvider().getProducts());
+final crudProvider = Provider((ref) => ProductProvider());
 
 class ProductProvider{
 
