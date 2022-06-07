@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_projects_start/model/cart_item.dart';
 import 'package:flutter_projects_start/model/user.dart';
 import 'package:flutter_projects_start/screens/status_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,16 +8,20 @@ import 'package:hive_flutter/adapters.dart';
 
 
 final box1 = Provider<List<User>>((ref) => []);
+final box2 = Provider<List<CartItem>>((ref) => []);
 
 void main () async{
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(UserAdapter());
+  Hive.registerAdapter(CartItemAdapter());
   final userBox = await Hive.openBox<User>('user');
+  final cartBox = await Hive.openBox<CartItem>('carts');
   runApp(
       ProviderScope(
         overrides: [
           box1.overrideWithValue(userBox.values.toList()),
+          box2.overrideWithValue(cartBox.values.toList()),
         ],
       child: Home()));
 }

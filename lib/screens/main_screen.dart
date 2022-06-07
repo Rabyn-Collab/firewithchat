@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_projects_start/provider/auth_provider.dart';
 import 'package:flutter_projects_start/provider/product_provider.dart';
+import 'package:flutter_projects_start/screens/detail_screen.dart';
 import 'package:flutter_projects_start/widgets/drawer_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 
 
 class MainScreen extends StatelessWidget {
@@ -35,16 +37,23 @@ class MainScreen extends StatelessWidget {
                              childAspectRatio: 2/3
                            ),
                            itemBuilder: (context, index){
-                           return GridTile(
-                               child: Image.network(data[index].image),
-                           footer: Container(
-                             height: 37,
-                             child: GridTileBar(
-                               backgroundColor: Colors.black,
-                               title: Text(data[index].product_name),
-                               trailing: Text('Rs. ${data[index].price}', style: TextStyle(color: Colors.white),),
+                           return InkWell(
+                             onTap: (){
+                               Get.to(() => DetailScreen(product: data[index]), transition: Transition.leftToRight);
+                             },
+                             child: GridTile(
+                                 child: Hero(
+                                     tag: data[index].id,
+                                     child: Image.network(data[index].image)),
+                             footer: Container(
+                               height: 37,
+                               child: GridTileBar(
+                                 backgroundColor: Colors.black,
+                                 title: Text(data[index].product_name),
+                                 trailing: Text('Rs. ${data[index].price}', style: TextStyle(color: Colors.white),),
+                               ),
                              ),
-                           ),
+                             ),
                            );
                            }
                        ),

@@ -80,6 +80,7 @@ class ProductProvider{
           'product_name' : product_name,
           'product_detail' : product_detail,
           'price': price,
+          'public_id': public_id,
           'photo': await MultipartFile.fromFile(image.path)
         });
 

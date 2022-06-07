@@ -41,7 +41,26 @@ class CustomizeScreen extends StatelessWidget {
                                               }, icon: Icon(Icons.edit)),
                                           IconButton(
                                               onPressed: (){
-
+                                                Get.defaultDialog(
+                                                  title: 'Are you sure',
+                                                  content: Text('You want to remove this post'),
+                                                  actions: [
+                                                    TextButton(
+                                                        onPressed: (){
+                                                          Navigator.of(context).pop();
+                                                        }, child: Text('no')
+                                                    ),
+                                                    TextButton(
+                                                        onPressed: (){
+                                                          ref.read(crudProvider).removeProduct(
+                                                              id: data[index].id,
+                                                              imageId: data[index].public_id
+                                                          );
+                                                          Navigator.of(context).pop();
+                                                        }, child: Text('yes')
+                                                    ),
+                                                  ]
+                                                );
                                               }, icon: Icon(Icons.delete)),
 
                                         ],

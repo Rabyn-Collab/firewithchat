@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 
 
 
-final imageProvider = ChangeNotifierProvider((ref) => ImageProvider());
+final imageProvider = ChangeNotifierProvider.autoDispose((ref) => ImageProvider());
 
 class ImageProvider extends ChangeNotifier{
 
