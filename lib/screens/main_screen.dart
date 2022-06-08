@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_projects_start/provider/auth_provider.dart';
 import 'package:flutter_projects_start/provider/product_provider.dart';
+import 'package:flutter_projects_start/screens/cart_screen.dart';
 import 'package:flutter_projects_start/screens/detail_screen.dart';
 import 'package:flutter_projects_start/widgets/drawer_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,6 +22,12 @@ class MainScreen extends StatelessWidget {
             backgroundColor: Colors.purple,
             title: Text('Sample Shop'),
 
+            actions: [
+              TextButton(
+                  onPressed: (){
+                    Get.to(() => CartScreen(), transition:  Transition.leftToRight);
+                  }, child: Text('Cart Page', style: TextStyle(color: Colors.white),))
+            ],
           ),
             drawer: DrawerWidget(),
             body: SafeArea(

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_projects_start/model/product.dart';
+import 'package:flutter_projects_start/provider/cart_provider.dart';
+import 'package:flutter_projects_start/screens/cart_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 
 
 
@@ -31,16 +35,41 @@ class DetailScreen extends StatelessWidget {
                     children: [
                       SizedBox(height: 150,),
                       Expanded( child: Text(product.product_detail, style: TextStyle(fontSize: 19, color: Colors.blueGrey),)),
-                      Container(
-                        height: 45,
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.black
-                          ),
-                            onPressed: (){
+                      Consumer(
+                        builder: (context, ref, child) {
+                          return Container(
+                            height: 45,
+                            width: double.infinity,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: Colors.black
+                                ),
+                                onPressed: () {
+                                  final response = ref.read(cartProvider.notifier).addProduct(product);
+                                  if(response == 'success'){
+                                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                      duration: Duration(seconds: 1),
+                                      action: SnackBarAction(label: 'go to cart', onPressed: (){
+                                        Get.to(() => CartScreen(), transition:  Transition.leftToRight);
+                                      }),
+                                        content:Text('successfully added to cart') ),
+                                    );
+                                  }else{
 
-                            }, child: Text('Add To Cart')),
+                                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                        duration: Duration(seconds: 1),
+                                        action: SnackBarAction(label: 'go to cart', onPressed: (){
+                                          Get.to(() => CartScreen(), transition:  Transition.leftToRight);
+                                        }),
+                                        content:Text(response) ),
+                                    );
+
+                                  }
+                                }, child: Text('Add To Cart')),
+                          );
+                        }
                       )
                     ],
                   ),
