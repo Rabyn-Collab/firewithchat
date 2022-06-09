@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_projects_start/provider/cart_provider.dart';
+import 'package:flutter_projects_start/provider/order_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
@@ -14,7 +15,6 @@ class CartScreen extends StatelessWidget {
               builder: (context, ref, child) {
                 final cartData = ref.watch(cartProvider);
                 final total = ref.watch(cartProvider.notifier).total;
-                print(cartData.length);
                 return cartData.isEmpty ? Center(child: Text('add some product', style: TextStyle(fontSize: 25),)) : Column(
                   children: [
                     Expanded(
@@ -43,18 +43,26 @@ class CartScreen extends StatelessWidget {
                                               Text(cart.title),
                                               Spacer(),
                                               IconButton(onPressed: (){
+                                                ref.read(cartProvider.notifier).removeProduct(cart);
 
                                               }, icon: Icon(Icons.delete))
                                             ],
                                           ),
                                           Text('Rs. ${cart.price}'),
+                                            SizedBox(height: 10,),
+                                            Text('x ${cart.quantity}'),
                                             Spacer(),
                                           Row(
                                             children: [
                                               Spacer(),
-                                              OutlinedButton(onPressed: (){}, child: Icon(Icons.add)),
+                                              OutlinedButton(
+                                                  onPressed: (){
+                                                    ref.read(cartProvider.notifier).addSingleProduct(cart);
+                                              }, child: Icon(Icons.add)),
                                               SizedBox(width: 10,),
-                                              OutlinedButton(onPressed: (){}, child: Icon(Icons.remove)),
+                                              OutlinedButton(onPressed: (){
+                                                ref.read(cartProvider.notifier).removeSingleProduct(cart);
+                                              }, child: Icon(Icons.remove)),
                                             ],
                                           )
                                         ],
@@ -71,11 +79,39 @@ class CartScreen extends StatelessWidget {
                            Row(
                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                              children: [
-                               Text('Total'),
-                               Text('$total')
+                               Text('Total', style: TextStyle(fontSize: 20),),
+                               Text('$total', style: TextStyle(fontSize: 20),)
                              ],
                            )
                         ],
+                      ),
+                    ),
+                    SizedBox(height: 20,),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: 45,
+                        width: double.infinity,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors.black
+                            ),
+                            onPressed: () async{
+                              final response = await ref.read(orderProvider).addOrder(
+                                total: total,
+                                products: cartData
+                              );
+                              if(response != 'success'){
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    duration: Duration(seconds: 1),
+                                    content:Text(response) ),
+                                );
+                              }else{
+                                ref.read(cartProvider.notifier).clearCartsItem();
+                                Navigator.of(context).pop();
+                              }
+                            }, child: Text('CheckOut')),
                       ),
                     )
 

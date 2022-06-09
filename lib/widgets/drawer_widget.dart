@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_projects_start/provider/auth_provider.dart';
 import 'package:flutter_projects_start/screens/create_screen.dart';
 import 'package:flutter_projects_start/screens/customize_page.dart';
+import 'package:flutter_projects_start/screens/order_history.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 
@@ -50,6 +51,14 @@ class DrawerWidget extends StatelessWidget {
                         },
                         leading: Icon(Icons.add_chart_outlined),
                         title: Text('Customize Post'),
+                      ),
+                      ListTile(
+                        onTap: (){
+                          Navigator.of(context).pop();
+                          Get.to(() => OrderHistory(), transition: Transition.leftToRight);
+                        },
+                        leading: Icon(Icons.history),
+                        title: Text('order_history'),
                       ),
 
                       ListTile(

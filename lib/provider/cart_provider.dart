@@ -78,8 +78,12 @@ class CartProvider extends StateNotifier<List<CartItem>>{
 
   void removeProduct(CartItem cartItem){
      cartItem.delete();
-     cartItem.save();
-     state.removeWhere((element) => element.id == cartItem.id);
+     final cart =state.firstWhere((element) => element.id == cartItem.id);
+     state.remove(cart);
+     state = [
+       for(final element in state)
+         if(element == cart) cart else element
+     ];
 
   }
 

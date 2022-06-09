@@ -47,7 +47,7 @@ class CartItem extends HiveObject{
 
   Map<String, dynamic> toJson(){
     return {
-      'title': this.total,
+      'title': this.title,
       'imageUrl': this.imageUrl,
       'id': this.id,
       'price': this.price,

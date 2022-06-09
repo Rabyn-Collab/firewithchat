@@ -7,10 +7,14 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 
 
+
+
 final box1 = Provider<List<User>>((ref) => []);
 final box2 = Provider<List<CartItem>>((ref) => []);
 
 void main () async{
+
+
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(UserAdapter());

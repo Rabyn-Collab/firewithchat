@@ -14,10 +14,14 @@ class User extends HiveObject{
   @HiveField(2)
   String token;
 
+  @HiveField(3)
+  String id;
+
   User({
    required this.email,
     required this.username,
-    required this.token
+    required this.token,
+    required this.id
 });
 
 
@@ -25,7 +29,8 @@ class User extends HiveObject{
     return User(
         email: json['email'],
         username: json['username'],
-        token: json['token']
+        token: json['token'],
+      id: json['id']
     );
   }
 

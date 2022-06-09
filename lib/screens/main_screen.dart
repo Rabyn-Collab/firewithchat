@@ -17,6 +17,7 @@ class MainScreen extends StatelessWidget {
       builder: (context, ref, child) {
         final box = ref.watch(userProvider);
         final products = ref.watch(productProvider);
+
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.purple,
