@@ -12,7 +12,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 
 final orderProvider = Provider((ref) => OrderProvider());
-final historyProvider = FutureProvider((ref) => OrderProvider().getOrderHistory());
+final historyProvider = FutureProvider.autoDispose((ref) => OrderProvider().getOrderHistory());
 class OrderProvider {
 
 
