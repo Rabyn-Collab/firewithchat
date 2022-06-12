@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_projects_start/location_show.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 
 
 class LocationCheck extends StatelessWidget {
@@ -24,8 +26,9 @@ class LocationCheck extends StatelessWidget {
         }
 
         if(position !=null){
-           List<Placemark> placemarks = await placemarkFromCoordinates(position!.latitude, position!.longitude);
-                print(placemarks);
+           // List<Placemark> placemarks = await placemarkFromCoordinates(position!.latitude, position!.longitude);
+           //      print(placemarks);
+         Get.to(() => MapSample(position!.latitude, position!.longitude), transition: Transition.leftToRight);
         }
 
               },
